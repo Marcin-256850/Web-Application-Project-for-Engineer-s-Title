@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/styleorder.css' %}">
+</head>
+
+<body>
+    {% include 'navigation.html' %}
+    {% if permission %}
+    <br>
+    <div>
+        <a href="{% url 'createorder' %}">Dodaj zamówienie</a>
+    </div>
+    <br>
+    {% endif %}
+    {% if orders %}
+    <div class="order">
+        {% for order in orders%}
+        <p>Nazwa zamówienia:{{ order.name }}</p>
+        <p>Nazwa klienta:{{ order.client }}</p>
+        <p>Adres klienta:{{ order.adress }}</p>
+        <p>Opis zamówienia:{{ order.description }}</p>
+        {% if order.state == 'tw' %}
+        <p>Status zamówienia: W trakcie</p>
+        {% endif %}
+        {% if order.state == 'zk' %}
+        <p>Status zamówienia: Zakończony</p>
+        {% endif %}
+        {% if order.state == 'wc' %}
+        <p>Status zamówienia: Zapłacony</p>
+        {% endif %}
+        {% if permission %}
+        <a class="perm" href="{% url 'updateorder' order.id %}">Edytuj</a>
+        <a class="perm" href="{% url 'deleteorder' order.id %}">Usuń</a>
+        {% endif %}
+        <br><br><br>
+        {% endfor %}
+    </div>
+    {% endif %}
+</body>
+
+</html>

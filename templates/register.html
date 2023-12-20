@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<h1>Rejestracja</h1>
+{% if form %}
+<form action="" method="post">
+    {% csrf_token %}
+    <label for="name">Podaj imię:</label>
+    <br>
+    <input type="text" name="name" id="name">
+    <br>
+    <label for="surname">Podaj nazwisko:</label>
+    <br>
+    <input type="text" name="surname" id="surname">
+    <br>
+    <label for="mail">Podaj swój email:</label>
+    <br>
+    <input type="text" name="mail" id="mail">
+    <br>
+    <label for="pass">Podaj hasło:</label>
+    <br>
+    <input type="password" name="pass" id="pass">
+    <br>
+    <label for="repass">Powtórz hasło:</label>
+    <br>
+    <input type="password" name="repass" id="repass">
+    <br>
+    <input type="submit" value="Zarejestruj">
+    <br>
+</form>
+{% endif %}
+{% if blad %}
+<p style="color: red;">{{ blad }}</p>
+{% endif %}
+
+{% if udane %}
+<p style="color: green;">{{ udane }}</p>
+{% endif %}
+
+<a href="{% url 'login' %}"><button>Wróć do logowania</button></a>
+
+</html>

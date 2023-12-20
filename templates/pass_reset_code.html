@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<h1>Zmiana hasła</h1>
+{% if code %}
+<form action="" method="post">
+    {% csrf_token %}
+    <label for="pass">Podaj nowe hasło:</label>
+    <br>
+    <input type="password" name="pass" id="pass">
+    <br>
+    <label for="repass">Powtórz nowe hasło:</label>
+    <br>
+    <input type="password" name="repass" id="repass">
+    <br>
+    <p>Na twojego maila został wysłany 6-cyfrowy kod. Wprowadź go aby potwierdzić zmianę hasła.</p>
+    <br>
+    <input type="text" name="code" id="code">
+    <br>
+    <input type="submit" value="Zmień hasło">
+    <br>
+</form>
+{% endif %}
+{% if udane %}
+<p style="color: green;">{{ udane }}</p>
+{% endif %}
+{% if blad %}
+<p style="color: red;">{{ blad }}</p>
+{% endif %}
+<a href="{% url 'login' %}"><button>Wróć do logowania</button></a>
+
+</html>

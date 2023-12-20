@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<h1>Logowanie</h1>
+<form action="" method="POST">
+    {% csrf_token %}
+    <label for="mail">Podaj swój email:</label>
+    <br>
+    <input type="text" name="mail" id="mail">
+    <br>
+    <label for="pass">Podaj hasło:</label>
+    <br>
+    <input type="password" name="pass" id="pass">
+    <br>
+    <input type="submit" value="Zaloguj">
+    <br>
+</form>
+{% if blad %}
+<p style="color: red;">{{ blad }}</p>
+{% endif %}
+
+<a href="{% url 'pass_reset_mail' %}"><button>Zapomniałeś hasła?</button></a>
+<br>
+<a href="{% url 'register' %}"><button>Nie posiadasz konta? Zarejestruj się!</button></a>
+
+</html>

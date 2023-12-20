@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<h1>Zmiana hasła</h1>
+<form action="" method="post">
+    {% csrf_token %}
+    <label for="mail">Podaj swój email:</label>
+    <br>
+    <input type="text" name="mail" id="mail">
+    <br>
+    <input type="submit" value="Wyślij maila w celu potwierdzenia zmiany hasła.">
+    {% if blad %}
+    <p style="color: red;">{{ blad }}</p>
+    {% endif %}
+</form>
+
+<a href="{% url 'login' %}"><button>Wróć do logowania</button></a>
+
+</html>

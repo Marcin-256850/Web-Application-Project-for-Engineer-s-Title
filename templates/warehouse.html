@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/styleorder.css' %}">
+</head>
+
+<body>
+    {% include 'navigation.html' %}
+    {% if permission %}
+    <br>
+    <div>
+        <a href="{% url 'createwarehouse' %}">Dodaj materiał</a>
+    </div>
+    <br>
+    {% endif %}
+    {% if materials %}
+    <div class="order">
+        {% for material in materials %}
+        <p>Nazwa materiału:{{ material.name }}</p>
+        <p>Ilość posiadanego materiału:{{ material.amount }} m²</p>
+        {% if permission %}
+        <a class="perm" href="{% url 'updatewarehouse' material.id %}">Edytuj</a>
+        <a class="perm" href="{% url 'deletewarehouse' material.id %}">Usuń</a>
+        {% endif %}
+        <br><br><br>
+        {% endfor %}
+    </div>
+    {% endif %}
+</body>
+
+</html>

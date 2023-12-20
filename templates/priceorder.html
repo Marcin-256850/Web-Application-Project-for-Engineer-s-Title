@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/stylecreateorder.css' %}">
+    <style>
+        h2 {
+            color: #7E5537;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'navigation.html' %}
+    <h2>Dodaj usługę</h2>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" name="add" id="add" value="Dodaj">'
+        <input type="submit" name="clear" id="clear" value="Wyczyść listę usług">
+    </form>
+    <a class="back" href="{% url 'price' %}"><button>Wróć</button></a>
+    {% if list != None%}
+    <h2>Dodane usługi</h2>
+    {% for service_values in list %}
+    <li>
+        <strong>Nazwa usługi:</strong> {{ service_values.0 }}
+        <strong>Ilość:</strong> {{ service_values.1 }}
+        <strong>Wartość Netto:</strong> {{ service_values.2 }}
+        <strong>Procent VAT:</strong> {{ service_values.3 }}<br>
+    </li>
+    {% endfor %}
+    {% endif %}
+    {% if request.session.pk %}
+    <br>
+    <a class="back" href="{% url 'saveprice' request.session.pk %}"><button>Zapisz</button></a>
+    <a class="back" href="{% url 'generatepriceorder' request.session.pk %}"><button>Wygenereuj fakturę</button></a>
+    {% endif %}
+</body>
+{% if blad %}
+<p style="color: red;">{{ blad }}</p>
+{% endif %}
+
+</html>

@@ -1,0 +1,216 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/stylecreateorder.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        div.container {
+            max-height: 25vh;
+            text-align: center;
+            color: #7E5537;
+            font-weight: bold;
+        }
+
+        .scroll a {
+            font-weight: bold;
+            background: linear-gradient(to bottom, #e0eaf6, #C9D0E3);
+            padding: 10px 15px;
+            color: #7E5537;
+            border: solid;
+            border-radius: 2px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        div.todo {
+            overflow: auto;
+            width: 99%;
+            padding-left: 1%;
+
+        }
+
+        div.day {
+            color: #7E5537;
+            font-weight: bold;
+            max-height: 9vh;
+            border: solid;
+        }
+
+        div.scroll {
+            overflow-y: scroll;
+            max-height: 49vh;
+            border: solid;
+            font-weight: bold;
+            border-top: none;
+            color: #7E5537;
+        }
+
+        div.pn {
+            text-align: center;
+            vertical-align: top;
+            display: inline-block;
+            width: 19%;
+            max-height: 60vh;
+        }
+
+        div.wt {
+            text-align: center;
+            vertical-align: top;
+            display: inline-block;
+            width: 19%;
+            max-height: 60vh;
+        }
+
+        div.sr {
+            text-align: center;
+            vertical-align: top;
+            display: inline-block;
+            width: 19%;
+            max-height: 60vh;
+        }
+
+        div.cz {
+            text-align: center;
+            vertical-align: top;
+            display: inline-block;
+            width: 19%;
+            max-height: 60vh;
+        }
+
+        div.pt {
+            text-align: center;
+            vertical-align: top;
+            display: inline-block;
+            width: 19%;
+            max-height: 60vh;
+        }
+
+        #add {
+            float: left;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'navigation.html' %}
+    <div class="container">
+        <h1>{{ week }} Tydzień</h1>
+        <h2>
+            <p>{{ pon }} - {{ sun }}</p>
+        </h2>
+        <form action="{% url 'tasks' %}" method="post">
+            {% csrf_token %}
+            <input type="submit" name="previousweek" value="Poprzedni tydzień">
+            <input type="submit" name="currentweek" value="Obecny tydzień">
+            <input type="submit" name="nextweek" value="Przyszły tydzień">
+        </form>
+        {% if permission %}
+        <a id="add" href="{% url 'createtask' %}"><button>Dodaj zadanie</button></a>
+        {% endif %}
+    </div>
+    <div class="todo">
+        <div class="pn">
+            <div class="day">
+                <h2>Poniedziałek</h2>
+            </div>
+            {% if mon_task %}
+            <div class="scroll">
+                {% for mon in mon_task %}
+                <p>Zadanie: {{ mon.name }}</p>
+                <p>Pracownik: {{ mon.user }}</p>
+                <p>Zamówienie: {{ mon.order }}</p>
+                <p>Czas rozpoczęcia: {{ mon.dates|time }}</p>
+                {% if permission %}
+                <p>
+                    <a href="{% url 'updatetask' mon.id %}">Edytuj</a>
+                    <a href="{% url 'deletetask' mon.id %}">Usuń</a>
+                </p>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="wt">
+            <div class="day">
+                <h2>Wtorek</h2>
+            </div>
+            {% if tues_task %}
+            <div class="scroll">
+                {% for wt in tues_task %}
+                <p>Zadanie: {{ wt.name }}</p>
+                <p>Pracownik: {{ wt.user }}</p>
+                <p>Zamówienie: {{ wt.order }}</p>
+                <p>Czas rozpoczęcia: {{ wt.dates|time }}</p>
+                {% if permission %}
+                <a href="{% url 'updatetask' wt.id %}">Edytuj</a>
+                <a href="{% url 'deletetask' wt.id %}">Usuń</a>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="sr">
+            <div class="day">
+                <h2>Środa</h2>
+            </div>
+            {% if wedn_task %}
+            <div class="scroll">
+                {% for wed in wedn_task %}
+                <p>Zadanie: {{ wed.name }}</p>
+                <p>Pracownik: {{ wed.user }}</p>
+                <p>Zamówienie: {{ wed.order }}</p>
+                <p>Czas rozpoczęcia: {{ wed.dates|time }}</p>
+                {% if permission %}
+                <a href="{% url 'updatetask' wed.id %}">Edytuj</a>
+                <a href="{% url 'deletetask' wed.id %}">Usuń</a>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="cz">
+            <div class="day">
+                <h2>Czwartek</h2>
+            </div>
+            {% if thurs_task %}
+            <div class="scroll">
+                {% for thurs in thurs_task %}
+                <p>Zadanie: {{ thurs.name }}</p>
+                <p>Pracownik: {{ thurs.user }}</p>
+                <p>Zamówienie: {{ thurs.order }}</p>
+                <p>Czas rozpoczęcia: {{ thurs.dates|time }}</p>
+                {% if permission %}
+                <a href="{% url 'updatetask' thurs.id %}">Edytuj</a>
+                <a href="{% url 'deletetask' thurs.id %}">Usuń</a>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="pt">
+            <div class="day">
+                <h2>Piątek</h2>
+            </div>
+            {% if frid_task %}
+            <div class="scroll">
+                {% for frid in frid_task %}
+                <p>Zadanie: {{ frid.name }}</p>
+                <p>Pracownik: {{ frid.user }}</p>
+                <p>Zamówienie: {{ frid.order }}</p>
+                <p>Czas rozpoczęcia: {{ frid.dates|time }}</p>
+                {% if permission %}
+                <a href="{% url 'updatetask' frid.id %}">Edytuj</a>
+                <a href="{% url 'deletetask' frid.id %}">Usuń</a>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>

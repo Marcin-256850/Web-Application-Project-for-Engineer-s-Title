@@ -1,0 +1,44 @@
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #e0eaf6, #C9D0E3);
+}
+
+.perm:hover {
+    color: #7E5537;
+    background: #e0eaf6
+}
+
+form {
+    font-weight: bold;
+}
+
+label {
+    color: #7E5537;
+    font-weight: bold;
+}
+
+input,
+textarea,
+select,
+select option {
+    color: #7E5537;
+    width: auto;
+    font-weight: bold;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, #e0eaf6, #C9D0E3);
+}
+
+button {
+    font-weight: bold;
+    background: linear-gradient(to bottom, #e0eaf6, #C9D0E3);
+    padding: 10px 15px;
+    color: #7E5537;
+    border: solid;
+    border-color: black;
+    border-radius: 4px;
+    cursor: pointer;
+}

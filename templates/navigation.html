@@ -1,0 +1,62 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .topnav {
+        overflow: auto;
+        height: 100%;
+        background: linear-gradient(to bottom, #e0eaf6, #C9D0E3);
+        max-height: 20vh;
+    }
+
+    .topnav a {
+        float: left;
+        color: #7E5537;
+        letter-spacing: 1px;
+        font-weight: bold;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+    }
+
+    .topnav a:hover {
+        background-color: #7E5537;
+        color: #e0eaf6;
+    }
+
+    .topnav a.logout {
+        float: right;
+    }
+
+    .topnav p {
+        float: right;
+        background-color: #7E5537;
+        color: #e0eaf6;
+        display: inline;
+        letter-spacing: 1px;
+        font-weight: bold;
+        text-align: center;
+        margin: 0;
+        font-size: 17px;
+        line-height: 48px;
+        padding: 0px 10px;
+    }
+</style>
+
+<div class="topnav">
+    <a class="active" href="{% url 'home' %}">Home</a>
+    <a href="{% url 'orders' %}">Zamówienia</a>
+    <a href="{% url 'tasks' %}">Harmonogram zadań</a>
+    <a href="{% url 'warehouse' %}">Magazyn</a>
+    {% if permission %}
+    <a href="{% url 'price' %}">Wycena zamówień</a>
+    {% endif %}
+    <div>
+        <a class="logout" href="{% url 'logout' %}">Wyloguj się</a>
+        <p>{{ info }}</p>
+    </div>
+</div>

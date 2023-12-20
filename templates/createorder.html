@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/stylecreateorder.css' %}">
+</head>
+
+<body>
+    {% include 'navigation.html' %}
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" name="add" id="add" value="Dodaj">'
+    </form>
+    <a class="back" href="{% url 'orders' %}"><button>Wróć</button></a>
+</body>
+{% if blad %}
+<p style="color: red;">{{ blad }}</p>
+{% endif %}
+
+</html>
