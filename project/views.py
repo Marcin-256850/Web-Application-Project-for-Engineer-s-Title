@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import User, Order, Task, Warehouse
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
@@ -17,7 +18,7 @@ import io
 def user_login(request):
     if request.method == "POST":
         mail = request.POST.get("mail")
-        passw = request.POST.get("pass")
+        passw = request.POST.get("passw")
         user = authenticate(request, email=mail, password=passw)
         if user is not None:
             u = User.objects.get(email=mail)
@@ -130,16 +131,16 @@ def pass_reset_code(request):
             )
     return render(request, "pass_reset_code.html", {"code": "code"})
 
-
+@login_required
 def home(request):
-    role = request.user.role
-    info = request.user.first_name + " " + request.user.last_name
-    if role == "wl" or role == "kr":
-        return render(request, "home.html", {"permission": "yes", "info": info})
-    else:
-        return render(request, "home.html", {"info": info})
+        role = request.user.role
+        info = request.user.first_name + " " + request.user.last_name
+        if role == "wl" or role == "kr":
+            return render(request, "home.html", {"permission": "yes", "info": info})
+        else:
+            return render(request, "home.html", {"info": info})
 
-
+@login_required
 def orders(request):
     role = request.user.role
     info = request.user.first_name + " " + request.user.last_name
@@ -154,8 +155,10 @@ def orders(request):
         else:
             return render(request, "orders.html", {"info": info, "orders": order})
 
-
+@login_required
 def createorder(request):
+    role = request.user.role
+    info = request.user.first_name + " " + request.user.last_name
     if request.method == "POST":
         form = orderform(request.POST)
         if form.is_valid():
@@ -172,8 +175,6 @@ def createorder(request):
                     "blad": "Niepoprawne dane.Spróbuj ponownie",
                 },
             )
-    role = request.user.role
-    info = request.user.first_name + " " + request.user.last_name
     form = orderform()
     if role == "wl" or role == "kr":
         return render(
@@ -184,7 +185,7 @@ def createorder(request):
     else:
         return render(request, "createorder.html", {"info": info})
 
-
+@login_required
 def updateorder(request, pk):
     info = request.user.first_name + " " + request.user.last_name
     order = Order.objects.get(id=pk)
@@ -198,13 +199,13 @@ def updateorder(request, pk):
 
     return render(request, "updateorder.html", context)
 
-
+@login_required
 def deleteorder(request, pk):
     order = Order.objects.get(id=pk)
     order.delete()
     return redirect("orders")
 
-
+@login_required
 def tasks(request):
     role = request.user.role
     info = request.user.first_name + " " + request.user.last_name
@@ -269,7 +270,7 @@ def tasks(request):
             context,
         )
 
-
+@login_required
 def calculateweek(target_date):
     pon = target_date - timedelta(days=target_date.weekday())
     wt = pon + timedelta(days=1)
@@ -292,7 +293,7 @@ def calculateweek(target_date):
         sun_formatted,
     )
 
-
+@login_required
 def createtask(request):
     info = request.user.first_name + " " + request.user.last_name
     form = taskform()
@@ -313,7 +314,7 @@ def createtask(request):
         context = {"permission": "yes", "info": info, "form": form}
         return render(request, "createtask.html", context)
 
-
+@login_required
 def updatetask(request, pk):
     info = request.user.first_name + " " + request.user.last_name
     task = Task.objects.get(id=pk)
@@ -326,13 +327,13 @@ def updatetask(request, pk):
             return redirect("tasks")
     return render(request, "updatetask.html", context)
 
-
+@login_required
 def deletetask(request, pk):
     order = Task.objects.get(id=pk)
     order.delete()
     return redirect("tasks")
 
-
+@login_required
 def price(request):
     info = request.user.first_name + " " + request.user.last_name
     if request.method == "GET":
@@ -341,7 +342,7 @@ def price(request):
             request, "price.html", {"permission": "yes", "info": info, "orders": order}
         )
 
-
+@login_required
 def priceorder(request, pk):
     info = request.user.first_name + " " + request.user.last_name
     request.session["pk"] = pk
@@ -396,7 +397,7 @@ def priceorder(request, pk):
             {"permission": "yes", "info": info, "form": form},
         )
 
-
+@login_required
 def saveprice(request, pk):
     order = Order.objects.get(id=pk)
     service_list = request.session.get("service_list", [])
@@ -413,7 +414,7 @@ def saveprice(request, pk):
     order.save()
     return redirect("price")
 
-
+@login_required
 def generatepriceorder(request, pk):
     order = Order.objects.get(id=pk)
     buffer = io.BytesIO()
@@ -471,7 +472,7 @@ def generatepriceorder(request, pk):
         buffer, as_attachment=True, filename="Faktura nr " + str(order.id) + ".pdf"
     )
 
-
+@login_required
 def editpriceorder(request, pk):
     info = request.user.first_name + " " + request.user.last_name
     if request.method == "GET":
@@ -480,7 +481,7 @@ def editpriceorder(request, pk):
             request, "price.html", {"permission": "yes", "info": info, "orders": order}
         )
 
-
+@login_required
 def warehouse(request):
     role = request.user.role
     info = request.user.first_name + " " + request.user.last_name
@@ -494,7 +495,7 @@ def warehouse(request):
     else:
         return render(request, "warehouse.html", {"info": info, "materials": materials})
 
-
+@login_required
 def createwarehouse(request):
     role = request.user.role
     info = request.user.first_name + " " + request.user.last_name
@@ -521,7 +522,7 @@ def createwarehouse(request):
         {"permission": "yes", "info": info, "form": form},
     )
 
-
+@login_required
 def updatewarehouse(request, pk):
     info = request.user.first_name + " " + request.user.last_name
     warehouse = Warehouse.objects.get(id=pk)
@@ -535,7 +536,7 @@ def updatewarehouse(request, pk):
 
     return render(request, "updatewarehouse.html", context)
 
-
+@login_required
 def deletewarehouse(request, pk):
     warehouse = Warehouse.objects.get(id=pk)
     warehouse.delete()
